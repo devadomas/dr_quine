@@ -1,0 +1,19 @@
+; HOW TO PASS ARGUMENTS
+;	rdi 1e arg
+;	rsi 2e arg
+;	rdx 3e arg
+;	rcx 4e arg
+;	r8  5e arg
+;	r9  6e arg
+
+; exit
+;	leave
+;	ret
+
+; calling conventions nasm
+
+; %1$c:	0xa
+; %2$c:	0x3b
+; %3$c:	0x22
+; %4$s:
+; %5$c:
