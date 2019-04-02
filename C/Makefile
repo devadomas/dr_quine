@@ -36,7 +36,7 @@ Grace:	 		$(OBJ_DIR) $(OBJS_GRACE)
 Sully: 			$(OBJ_DIR) $(OBJS_SULLY)
 				@$(CC) $(CFLAGS) -o $(NAME_SULLY) $(OBJS_SULLY)
 
-$(OBJ_DIR)%.o: 	$(SRC_DIR)%.c $(INCS)
+$(OBJ_DIR)%.o: 	$(SRC_DIR)%.c
 				$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
