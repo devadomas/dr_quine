@@ -25,13 +25,13 @@ OBJS_COLLEEN	= 		$(addprefix $(OBJ_DIR), $(OBJ_COLLEEN))
 OBJS_GRACE		= 		$(addprefix $(OBJ_DIR), $(OBJ_GRACE))
 OBJS_SULLY		= 		$(addprefix $(OBJ_DIR), $(OBJ_SULLY))
 
-all: 			Colleen # Grace Sully
+all: 			Colleen Grace # Sully
 
 Colleen:		$(OBJ_DIR) $(OBJS_COLLEEN)
 				@$(LD) $(LDFLAGS) -o $(NAME_COLLEEN) $(OBJS_COLLEEN)
 
-# Grace:	 		$(OBJ_DIR) $(OBJS_GRACE)
-# 				@$(LD) $(LDFLAGS) -o $(NAME_GRACE) $(OBJS_GRACE)
+Grace:	 		$(OBJ_DIR) $(OBJS_GRACE)
+				@$(LD) $(LDFLAGS) -o $(NAME_GRACE) $(OBJS_GRACE)
 
 # Sully: 			$(OBJ_DIR) $(OBJS_SULLY)
 # 				@$(LD) $(LDFLAGS) -o $(NAME_SULLY) $(OBJS_SULLY)
