@@ -1,0 +1,83 @@
+section .text
+
+extern _fprintf, _fopen, _fclose, _sprintf, _system, _printf, _execve
+global _main
+
+_main:
+push rbp
+mov rbp, rsp
+
+mov r12, 0x5
+cmp r12, 0
+jle .exit
+
+mov rdi, [rsp]
+mov rsi, filefmt
+mov rdx, r12
+call _sprintf
+
+mov rdi, [rsp]
+mov	rsi, mode_r
+call _fopen
+mov r11, rax
+cmp r11, 0
+je .continue
+mov rdi, r11
+call _fclose
+sub r12, 1
+mov rdi, [rsp]
+mov rsi, filefmt
+mov rdx, r12
+call _sprintf
+
+.continue:
+mov rdi, [rsp]
+mov	rsi, mode_w
+call _fopen
+mov r11, rax
+cmp r11, 0
+je .exit
+
+mov rdi, rax
+mov	rsi, string
+mov	rdx, 0xa
+mov rcx, r12
+mov	r8, 0x22
+mov r9, string
+call _fprintf
+
+mov rdi, r11
+call _fclose
+
+mov rdi, file
+mov rsi, mode_w
+call _fopen
+mov r11, rax
+cmp r11, 0
+je .exit
+
+mov rdi, r11
+mov rsi, command
+mov rdx, r12
+call _fprintf
+
+mov rdi, r11
+call _fclose
+
+mov rdi, cmd
+call _system
+
+.exit:
+leave
+ret
+
+section .data
+string db "section .text%1$c%1$cextern _fprintf, _fopen, _fclose, _sprintf, _system, _printf, _execve%1$cglobal _main%1$c%1$c_main:%1$cpush rbp%1$cmov rbp, rsp%1$c%1$cmov r12, 0x%2$x%1$ccmp r12, 0%1$cjle .exit%1$c%1$cmov rdi, [rsp]%1$cmov rsi, filefmt%1$cmov rdx, r12%1$ccall _sprintf%1$c%1$cmov rdi, [rsp]%1$cmov	rsi, mode_r%1$ccall _fopen%1$cmov r11, rax%1$ccmp r11, 0%1$cje .continue%1$cmov rdi, r11%1$ccall _fclose%1$csub r12, 1%1$cmov rdi, [rsp]%1$cmov rsi, filefmt%1$cmov rdx, r12%1$ccall _sprintf%1$c%1$c.continue:%1$cmov rdi, [rsp]%1$cmov	rsi, mode_w%1$ccall _fopen%1$cmov r11, rax%1$ccmp r11, 0%1$cje .exit%1$c%1$cmov rdi, rax%1$cmov	rsi, string%1$cmov	rdx, 0xa%1$cmov rcx, r12%1$cmov	r8, 0x22%1$cmov r9, string%1$ccall _fprintf%1$c%1$cmov rdi, r11%1$ccall _fclose%1$c%1$cmov rdi, command%1$cmov rsi, command%1$cmov rdx, r12%1$ccall _sprintf%1$c%1$cmov rdi, command%1$ccall _printf%1$c%1$c.exit:%1$cleave%1$cret%1$c%1$csection .data%1$cstring db %3$c%4$s%3$c, 0%1$cfilefmt db %3$cSully_%%d.s%3$c, 0%1$cmode_w db %3$cw%3$c, 0%1$cmode_r db %3$cr%3$c, 0%1$ccommand db %3$c~/.brew/bin/nasm -f macho64 Sully_%%1$d.s -o Sully_%%1$d.o && /usr/bin/ld -lSystem -macosx_version_min 12.10 -o Sully_%%1$d Sully_%%1$d.o && ./Sully_%%1$d%3$c, 0%1$c", 0
+filefmt db "Sully_%d.s", 0
+mode_w db "w", 0
+mode_r db "r", 0
+; command db "~/.brew/bin/nasm -f macho64 Sully_%1$d.s -o Sully_%1$d.o", 0
+; command db "~/.brew/bin/nasm -f macho64 Sully_%1$d.s -o Sully_%1$d.o && /usr/bin/ld -lSystem -macosx_version_min 12.10 -o Sully_%1$d Sully_%1$d.o && ./Sully_%1$d", 0
+file db "./x.sh", 0
+command db "echo Hello world && ~/.brew/bin/nasm -f macho64 Sully_%1$d.s -o Sully_%1$d.o && /usr/bin/ld -lSystem -macosx_version_min 12.10 -o Sully_%1$d Sully_%1$d.o && ./Sully_%1$d", 0
+cmd db "/bin/chmod 777 x.sh && ./x.sh", 0
