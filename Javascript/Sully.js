@@ -3,10 +3,18 @@ const exec = require('child_process').exec
 
 const main = () => {
 	const i = 5;
-	if (i >= 0) {
+	if (i > 0) {
 		const str = `const fs = require('fs')\nconst exec = require('child_process').exec\n\nconst main = ${main}\n\nmain()\n`
-		fs.writeFileSync(`Sully_${i}.js`, str.replace(i, i - 1))
-		exec(`node Sully_${i}.js`)
+		if (fs.existsSync(`Sully_${i}.js`)) {
+			fs.writeFileSync(`Sully_${i - 1}.js`, str.replace(i, i - 1))
+			fs.writeFileSync(`FakeFile${i - 1}`, 'Forget it')
+			exec(`node Sully_${i - 1}.js`)
+		}
+		else {
+			fs.writeFileSync(`Sully_${i}.js`, str)
+			fs.writeFileSync(`FakeFile${i}`, 'Forget it')
+			exec(`node Sully_${i}.js`)
+		}
 	}
 }
 
