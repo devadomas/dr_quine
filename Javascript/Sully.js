@@ -7,12 +7,12 @@ const main = () => {
 		const str = `const fs = require('fs')\nconst exec = require('child_process').exec\n\nconst main = ${main}\n\nmain()\n`
 		if (fs.existsSync(`Sully_${i}.js`)) {
 			fs.writeFileSync(`Sully_${i - 1}.js`, str.replace(i, i - 1))
-			fs.writeFileSync(`FakeFile${i - 1}`, 'Forget it')
+			fs.writeFileSync(`FakeSully${i - 1}`, 'Forget it')
 			exec(`node Sully_${i - 1}.js`)
 		}
 		else {
 			fs.writeFileSync(`Sully_${i}.js`, str)
-			fs.writeFileSync(`FakeFile${i}`, 'Forget it')
+			fs.writeFileSync(`FakeSully${i}`, 'Forget it')
 			exec(`node Sully_${i}.js`)
 		}
 	}
