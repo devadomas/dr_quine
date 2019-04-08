@@ -30,7 +30,7 @@ _main:
 .initialize_iter:
 	mov byte [iter], COUNT
 	cmp byte [iter], 0
-	je .exit
+	jle .exit
 
 .decrement_iter:
 	lea rdi, [file_check]
